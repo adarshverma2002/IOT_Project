@@ -1,114 +1,238 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
 
-class powerUnitsScreen extends StatefulWidget {
-  const powerUnitsScreen({Key? key}) : super(key: key);
+class powerUnitScreen extends StatefulWidget {
+  const powerUnitScreen({Key? key}) : super(key: key);
 
   @override
-  State<powerUnitsScreen> createState() => _powerUnitsScreenState();
+  State<powerUnitScreen> createState() => _powerUnitScreenState();
 }
 
-class _powerUnitsScreenState extends State<powerUnitsScreen> {
+class _powerUnitScreenState extends State<powerUnitScreen> {
   @override
   Widget build(BuildContext context) {
-    double _value = 5000.0;
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Color(0xff0bd0a3),
-      // ),
-      body: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 30,
-          ),
-          Container(
-            height: 300,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-                boxShadow: [BoxShadow(blurRadius: 25)],
-                color: Color(0xff0bd0a3),
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(15))),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  "",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Tilt'),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                AnimatedFlipCounter(
-                  value: _value,
-                  duration: const Duration(milliseconds: 1000),
-                  fractionDigits: 2,
-                  textStyle: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 60),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  "Units",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 25),
-                ),
-              ],
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Row(
+          children: [
+            Icon(
+              Icons.arrow_back,
+              color: Colors.black87,
+              size: 24,
             ),
-          ),
-          Column(
+            SizedBox(
+              width: 280,
+            ),
+            Icon(
+              Icons.more_vert,
+              color: Colors.black87,
+              size: 24,
+            )
+          ],
+        ),
+      ),
+      body: Container(
+        child: Center(
+          child: Column(
             children: [
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Amount to be paid ",
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 30,
-                          fontFamily: 'Tilt'),
-                    )),
+              SizedBox(height: 56),
+              CircleAvatar(
+                foregroundColor: Colors.blue,
+                backgroundImage: AssetImage('asset/adarshpic.jpg'),
+                radius: 35,
               ),
-              const SizedBox(height: 60),
-              const AnimatedFlipCounter(
-                prefix: '₹',
-                value: 20,
-                duration: Duration(milliseconds: 1000),
-                textStyle: TextStyle(
-                    color: Color(0xff0bd0a3),
-                    fontSize: 30,
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Adarsh Verma", // Name of charging station
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(
+                height: 3,
+              ),
+              Text(
+                "adarsh.upi.id",
+                style: TextStyle(fontSize: 14),
+              ),
+              SizedBox(
+                height: 52,
+              ),
+              Text(
+                "UNITS CONSUMED",
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold),
               ),
-              // SizedBox(height: 290),
-              ElevatedButton(
-                  onPressed: () {
-                    print("Payment button pressed");
-                  },
-                  child: const Text(
-                    "   Proceed to Pay   ",
-                    style: TextStyle(
-                      fontSize: 14,
+              SizedBox(
+                height: 7,
+              ),
+              AnimatedFlipCounter(
+                value: 1300,
+                fractionDigits: 2,
+                duration: Duration(milliseconds: 500),
+                textStyle: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 60,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 120,
+              ),
+              Expanded(
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 100,
+
+                  // constraints: BoxConstraints.expand(),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10)),
+                      boxShadow: [BoxShadow(blurRadius: 12)]),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Container(
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Row(
+                              children: [
+                                SizedBox(width: 15),
+                                Text(
+                                  "Amount Due",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Total unit price",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Color(0xFF5C5C5C)),
+                                ),
+                                Spacer(),
+                                Text(
+                                  "200.00",
+                                ), // This value to be updated real-time
+                              ],
+                            ),
+                          ),
+
+                          // Row(
+                          //   children: [],
+                          // ),// change per unit charge
+
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Service Charge",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Color(0xFF5C5C5C)),
+                                ),
+                                Spacer(),
+                                Text(
+                                    "10.00") //This value will be updated from firebase
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          // Container(
+                          //   width: MediaQuery.of(context).size.width / 1.119,
+                          //   height: 1,
+                          //   color: Colors.black87,
+                          // ),
+
+                          Divider(
+                            color: Color(0xFF5C5C5C),
+                            height: 5,
+                            thickness: 1,
+                            indent: 15,
+                            endIndent: 15,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Total Amount",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
+                                Spacer(),
+                                Text(
+                                  "210.00",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 30,
+                          ),
+                          // Spacer(
+                          //   flex: 1,
+                          // ),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              print("payment button pressed");
+                            },
+                            child: Text(
+                              "Continue to pay",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF0BD0A3),
+                                shadowColor: Colors.greenAccent,
+                                elevation: 5,
+                                minimumSize: Size(280, 40),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20))),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff0bd0a3)))
+                ),
+              ),
             ],
-          ), // This container is for Car details or some other info like amount to be payed
-        ],
+          ),
+        ),
       ),
     );
   }
