@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "833142078195",
+    "project_id": "wecharge-e5332",
+    "storage_bucket": "wecharge-e5332.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833142078195:android:39c227e93fd8c918231586",
+        "android_client_info": {
+          "package_name": "com.example.blue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833142078195-v2vi3pldgeaknf8agjjf5digeku6bsh8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB04YYgjnZZSOpw4YnJl_RC0nKoHQr2GaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833142078195-v2vi3pldgeaknf8agjjf5digeku6bsh8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

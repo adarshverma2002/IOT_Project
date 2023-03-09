@@ -1,4 +1,7 @@
+import 'package:blue/services/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class loginPage extends StatefulWidget {
   const loginPage({Key? key}) : super(key: key);
@@ -8,104 +11,152 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool _loading = false;
+
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("asset/iot3.jpeg"),
-        fit: BoxFit.cover,
-        opacity: 0.5,
-      )),
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 120),
-          Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'IOT Project',
+    FirebaseAuthMethods methods = context.read<FirebaseAuthMethods>();
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 200,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "asset/evcar.png",
+                    scale: 4,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 22,
+                      ),
+                      Text(
+                        "WeCharge",
+                        style: TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Fred'),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 35,
+              ),
+              Text(
+                "Sign In to Continue",
                 style: TextStyle(
-                    color: Color(0xFF01303f),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 48),
-              )),
-          SizedBox(height: 60),
-          Container(
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Sign in',
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF01303f)),
-              )),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Theme(
-              data: ThemeData(
-                primaryColor: Colors.green,
-                primaryColorDark: Colors.pink,
+                    color: Colors.black54, fontFamily: 'Tilt', fontSize: 20),
               ),
-              child: TextField(
-                // controller: nameController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green)),
-                    labelText: 'User Name',
-                    labelStyle: TextStyle(color: Color(0xFF01303f))),
+              SizedBox(
+                height: 40,
               ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: TextField(
-              obscureText: true,
-              // controller: passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              //forgot password screen
-            },
-            style: TextButton.styleFrom(foregroundColor: Color(0xFF01303f)),
-            child: const Text(
-              'Forgot Password',
-            ),
-          ),
-          Container(
-              height: 50,
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff0bd0a3)),
-                child: const Text('Login'),
-                onPressed: () {
-                  // print(nameController.text);
-                  // print(passwordController.text);
-                },
-              )),
-          Row(
-            children: <Widget>[
-              const Text('Does not have account?'),
-              TextButton(
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(fontSize: 15, color: Color(0xFF01303f)),
+              Container(
+                width: 300,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black87,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(15)),
+                child: TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.black87,
+                        size: 30,
+                      ),
+                      hintText: "Username"),
                 ),
-                onPressed: () {
-                  //signup screen
-                },
-              )
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: 300,
+                // height: 50,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black87,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(15)),
+                child: TextField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      prefixIcon: Icon(
+                        Icons.key,
+                        color: Colors.black87,
+                        size: 30,
+                      ),
+                      hintText: "Password"),
+                ),
+              ),
+              SizedBox(height: 80),
+              SizedBox(
+                width: 200,
+                child: ElevatedButton(
+                  onPressed: () {
+                    methods.loginWithEmail(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        context: context);
+                  },
+                  child: Text(
+                    "Sign In",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF0BD0A3)),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account?",
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(color: Color(0xFF0BD0A3)),
+                      ))
+                ],
+              ),
             ],
-            mainAxisAlignment: MainAxisAlignment.center,
           ),
-        ],
+        ),
       ),
     );
+  }
+
+  signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim());
   }
 }

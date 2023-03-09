@@ -22,9 +22,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
               color: Colors.black87,
               size: 24,
             ),
-            SizedBox(
-              width: 280,
-            ),
+            Spacer(),
             Icon(
               Icons.more_vert,
               color: Colors.black87,
