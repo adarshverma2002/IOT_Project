@@ -1,4 +1,5 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:blue/services/realtimeData.dart';
 import 'package:flutter/material.dart';
 
 class powerUnitScreen extends StatefulWidget {
@@ -9,6 +10,22 @@ class powerUnitScreen extends StatefulWidget {
 }
 
 class _powerUnitScreenState extends State<powerUnitScreen> {
+  // get realValue => stream;
+  var unitsValue = 5;
+  var unitPrice = 6;
+  var unitCharge = 8;
+  var serviceCharge = 0;
+
+  @override
+  void initState() {
+    stream.listen((event) {
+      setState(() {
+        unitsValue = int.parse(event.snapshot.value.toString());
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +33,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Row(
-          children: [
+          children: const [
             Icon(
               Icons.arrow_back,
               color: Colors.black87,
@@ -35,49 +52,49 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 56),
-              CircleAvatar(
+              const SizedBox(height: 56),
+              const CircleAvatar(
                 foregroundColor: Colors.blue,
                 backgroundImage: AssetImage('asset/adarshpic.jpg'),
                 radius: 35,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Text(
+              const Text(
                 "Adarsh Verma", // Name of charging station
                 style: TextStyle(fontSize: 20),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 3,
               ),
-              Text(
+              const Text(
                 "adarsh.upi.id",
                 style: TextStyle(fontSize: 14),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 52,
               ),
-              Text(
+              const Text(
                 "UNITS CONSUMED",
                 style: TextStyle(
                     color: Colors.grey,
                     fontSize: 28,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 7,
               ),
               AnimatedFlipCounter(
-                value: 1300,
+                value: unitsValue,
                 fractionDigits: 2,
-                duration: Duration(milliseconds: 500),
-                textStyle: TextStyle(
+                duration: const Duration(milliseconds: 500),
+                textStyle: const TextStyle(
                     color: Colors.black87,
                     fontSize: 60,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 120,
               ),
               Expanded(
@@ -86,7 +103,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                   height: 100,
 
                   // constraints: BoxConstraints.expand(),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(10)),
@@ -98,13 +115,13 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Align(
                             alignment: Alignment.topLeft,
                             child: Row(
-                              children: [
+                              children: const [
                                 SizedBox(width: 15),
                                 Text(
                                   "Amount Due",
@@ -115,7 +132,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Padding(
@@ -123,42 +140,55 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                             child: Row(
                               // mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Total unit price",
                                   style: TextStyle(
                                       fontSize: 14, color: Color(0xFF5C5C5C)),
                                 ),
-                                Spacer(),
-                                Text(
-                                  "200.00",
-                                ), // This value to be updated real-time
+                                const Spacer(),
+                                Text(unitPrice
+                                    .toString()), // This value to be updated real-time
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 3),
+
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Row(
+                              children: [
+                                SizedBox(width: 14),
+                                const Text(
+                                  "per unit charge",
+                                  style: TextStyle(
+                                      fontSize: 12, color: Color(0xFF5C5C5C)),
+                                ),
+                                const Spacer(),
+                                Text(unitCharge
+                                    .toString()) //This value will be updated from firebase
                               ],
                             ),
                           ),
 
-                          // Row(
-                          //   children: [],
-                          // ),// change per unit charge
-
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Row(
                               children: [
-                                Text(
+                                const Text(
                                   "Service Charge",
                                   style: TextStyle(
                                       fontSize: 14, color: Color(0xFF5C5C5C)),
                                 ),
-                                Spacer(),
-                                Text(
+                                const Spacer(),
+                                const Text(
                                     "10.00") //This value will be updated from firebase
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           // Container(
@@ -167,30 +197,31 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                           //   color: Colors.black87,
                           // ),
 
-                          Divider(
+                          const Divider(
                             color: Color(0xFF5C5C5C),
                             height: 5,
                             thickness: 1,
                             indent: 15,
                             endIndent: 15,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Row(
                               children: [
-                                Text(
+                                const Text(
                                   "Total Amount",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black87),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 Text(
-                                  "210.00",
+                                  (unitPrice + unitCharge + serviceCharge)
+                                      .toString(),
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
@@ -199,7 +230,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                             ),
                           ),
 
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           ),
                           // Spacer(
@@ -210,15 +241,15 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                             onPressed: () {
                               print("payment button pressed");
                             },
-                            child: Text(
+                            child: const Text(
                               "Continue to pay",
                               style: TextStyle(fontSize: 18),
                             ),
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF0BD0A3),
+                                backgroundColor: const Color(0xFF0BD0A3),
                                 shadowColor: Colors.greenAccent,
                                 elevation: 5,
-                                minimumSize: Size(280, 40),
+                                minimumSize: const Size(280, 40),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
                           )

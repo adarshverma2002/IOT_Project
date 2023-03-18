@@ -1,3 +1,4 @@
+import 'package:blue/screens/signUp.dart';
 import 'package:blue/services/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +105,7 @@ class _loginPageState extends State<loginPage> {
                     borderRadius: BorderRadius.circular(15)),
                 child: TextField(
                   controller: passwordController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: Icon(
                         Icons.key,
@@ -114,7 +115,7 @@ class _loginPageState extends State<loginPage> {
                       hintText: "Password"),
                 ),
               ),
-              SizedBox(height: 80),
+              const SizedBox(height: 80),
               SizedBox(
                 width: 200,
                 child: ElevatedButton(
@@ -124,7 +125,7 @@ class _loginPageState extends State<loginPage> {
                         password: passwordController.text,
                         context: context);
                   },
-                  child: Text(
+                  child: const Text(
                     "Sign In",
                     style: TextStyle(fontSize: 18),
                   ),
@@ -135,13 +136,16 @@ class _loginPageState extends State<loginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Don't have an account?",
                     style: TextStyle(fontSize: 15),
                   ),
                   TextButton(
-                      onPressed: () {},
-                      child: Text(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => signUpPage()));
+                      },
+                      child: const Text(
                         "Sign Up",
                         style: TextStyle(color: Color(0xFF0BD0A3)),
                       ))
@@ -155,6 +159,10 @@ class _loginPageState extends State<loginPage> {
   }
 
   signIn() async {
+    showDialog(
+        context: context,
+        builder: (context) => const Center(child: CircularProgressIndicator()));
+
     await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim());
