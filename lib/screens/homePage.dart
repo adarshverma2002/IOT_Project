@@ -11,10 +11,10 @@ class powerUnitScreen extends StatefulWidget {
 
 class _powerUnitScreenState extends State<powerUnitScreen> {
   // get realValue => stream;
-  var unitsValue = 5;
-  var unitPrice = 6;
+  var unitsValue = 9;
+  var unitPrice = 9;
   var unitCharge = 8;
-  var serviceCharge = 0;
+  var serviceCharge = 5;
 
   @override
   void initState() {
@@ -183,8 +183,8 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                                       fontSize: 14, color: Color(0xFF5C5C5C)),
                                 ),
                                 const Spacer(),
-                                const Text(
-                                    "10.00") //This value will be updated from firebase
+                                Text(serviceCharge
+                                    .toString()) //This value will be updated from firebase
                               ],
                             ),
                           ),
@@ -220,7 +220,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  (unitPrice + unitCharge + serviceCharge)
+                                  (unitPrice * unitCharge + serviceCharge)
                                       .toString(),
                                   style: TextStyle(
                                       fontSize: 20,
