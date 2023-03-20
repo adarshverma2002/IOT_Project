@@ -57,6 +57,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
               icon: Icon(
                 Icons.exit_to_app,
                 color: Colors.black87,
+                size: 26,
               )),
         ]),
       ),

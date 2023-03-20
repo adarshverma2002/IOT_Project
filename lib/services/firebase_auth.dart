@@ -146,4 +146,12 @@ class FirebaseAuthMethods {
       // in user again and then delete account.
     }
   }
+
+  Future<void> resetPassword(BuildContext context) async {
+    try {
+      await _auth.sendPasswordResetEmail;
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+  }
 }

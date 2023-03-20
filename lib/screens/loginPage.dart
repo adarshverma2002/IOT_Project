@@ -1,3 +1,4 @@
+import 'package:blue/screens/forgotPassword.dart';
 import 'package:blue/screens/signUp.dart';
 import 'package:blue/services/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,6 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool _loading = false;
 
   void dispose() {
     emailController.dispose();
@@ -115,9 +115,26 @@ class _loginPageState extends State<loginPage> {
                       hintText: "Password"),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => forgotPassword()));
+                        },
+                        child: Text(
+                          "Forgot Password?",
+                          // style: TextStyle(color: Colors.black87),
+                        )),
+                  ],
+                ),
+              ),
               const SizedBox(height: 80),
               SizedBox(
-                width: 200,
+                width: 250,
                 child: ElevatedButton(
                   onPressed: () {
                     methods.loginWithEmail(
