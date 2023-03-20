@@ -1,6 +1,12 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:blue/screens/loginPage.dart';
+import 'package:blue/services/firebase_auth.dart';
 import 'package:blue/services/realtimeData.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../utils/show_snack_bar.dart';
 
 class powerUnitScreen extends StatefulWidget {
   const powerUnitScreen({Key? key}) : super(key: key);
@@ -12,7 +18,7 @@ class powerUnitScreen extends StatefulWidget {
 class _powerUnitScreenState extends State<powerUnitScreen> {
   // get realValue => stream;
   var unitsValue = 9;
-  var unitPrice = 9;
+  var unitConsumed = 200;
   var unitCharge = 8;
   var serviceCharge = 5;
 
@@ -21,6 +27,8 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
     stream.listen((event) {
       setState(() {
         unitsValue = int.parse(event.snapshot.value.toString());
+        unitConsumed = int.parse(event.snapshot.value.toString());
+        // unitConsumed = unitsValue;
       });
     });
     super.initState();
@@ -28,25 +36,29 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuthMethods methods = context.read<FirebaseAuthMethods>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Row(
-          children: const [
-            Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-              size: 24,
-            ),
-            Spacer(),
-            Icon(
-              Icons.more_vert,
-              color: Colors.black87,
-              size: 24,
-            )
-          ],
-        ),
+        title: Row(children: [
+          Icon(
+            Icons.arrow_back,
+            color: Colors.black87,
+            size: 24,
+          ),
+          Spacer(),
+          IconButton(
+              onPressed: () async {
+                methods.signOut(context);
+                await Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => loginPage()));
+              },
+              icon: Icon(
+                Icons.exit_to_app,
+                color: Colors.black87,
+              )),
+        ]),
       ),
       body: Container(
         child: Center(
@@ -141,12 +153,12 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                               // mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 const Text(
-                                  "Total unit price",
+                                  "Total units consumed",
                                   style: TextStyle(
                                       fontSize: 14, color: Color(0xFF5C5C5C)),
                                 ),
                                 const Spacer(),
-                                Text(unitPrice
+                                Text(unitConsumed
                                     .toString()), // This value to be updated real-time
                               ],
                             ),
@@ -220,7 +232,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  (unitPrice * unitCharge + serviceCharge)
+                                  (unitConsumed * unitCharge + serviceCharge)
                                       .toString(),
                                   style: TextStyle(
                                       fontSize: 20,
@@ -264,5 +276,16 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
         ),
       ),
     );
+  }
+
+  Future signOut() async {
+    showDialog(
+        context: context,
+        builder: (context) => const Center(child: CircularProgressIndicator()));
+    try {
+      await FirebaseAuth.instance.signOut();
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!);
+    }
   }
 }

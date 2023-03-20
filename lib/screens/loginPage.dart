@@ -158,7 +158,7 @@ class _loginPageState extends State<loginPage> {
     );
   }
 
-  signIn() async {
+  Future signIn() async {
     showDialog(
         context: context,
         builder: (context) => const Center(child: CircularProgressIndicator()));
