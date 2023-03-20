@@ -107,6 +107,10 @@ class _forgotPasswordState extends State<forgotPassword> {
                       } on FirebaseAuthException catch (e) {
                         showSnackBar(context, e.message!);
                       }
+                      showSnackBar(
+                          context,
+                          "Reset password link sent to your email",
+                          Color(0xFF0BD0A3));
                     },
                     child: Text("Submit"),
                     style: ElevatedButton.styleFrom(
