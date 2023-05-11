@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/loginPage.dart';
+
 class FirebaseAuthMethods {
   final FirebaseAuth _auth;
   FirebaseAuthMethods(this._auth);
@@ -62,16 +64,21 @@ class FirebaseAuthMethods {
         email: email,
         password: password,
       );
-      if (!user.emailVerified) {
-        await sendEmailVerification(context);
-        // restrict access to certain things using provider
-        // transition to another page instead of home screen
-      }
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => powerUnitScreen(),
-        ),
-      );
+      // if (!user.emailVerified) {
+      //   await sendEmailVerification(context);
+      //   // restrict access to certain things using provider
+      //   // transition to another page instead of home screen
+      // }
+      // showDialog(
+      //     context: context,
+      //     builder: (context) {
+      //       return CircularProgressIndicator();
+      //     });
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => powerUnitScreen()),
+          (Route<dynamic> route) => false);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }
@@ -131,6 +138,17 @@ class FirebaseAuthMethods {
   Future<void> signOut(BuildContext context) async {
     try {
       await _auth.signOut();
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return CircularProgressIndicator();
+          });
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => loginPage()),
+          (Route<dynamic> route) => false);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }

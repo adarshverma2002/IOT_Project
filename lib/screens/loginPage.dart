@@ -13,6 +13,7 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+  bool _obscureText = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -20,6 +21,12 @@ class _loginPageState extends State<loginPage> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = true;
   }
 
   @override
@@ -105,14 +112,29 @@ class _loginPageState extends State<loginPage> {
                     borderRadius: BorderRadius.circular(15)),
                 child: TextField(
                   controller: passwordController,
-                  decoration: const InputDecoration(
+                  obscureText: _obscureText,
+                  style: TextStyle(color: Colors.black87),
+                  decoration: InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: Icon(
                         Icons.key,
                         color: Colors.black87,
                         size: 30,
                       ),
-                      hintText: "Password"),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.black87,
+                          )),
+                      hintText: "Password",
+                      hintStyle: TextStyle(color: Colors.grey)),
                 ),
               ),
               Padding(
@@ -137,10 +159,13 @@ class _loginPageState extends State<loginPage> {
                 width: 250,
                 child: ElevatedButton(
                   onPressed: () {
+                    // signIn();
                     methods.loginWithEmail(
-                        email: emailController.text,
-                        password: passwordController.text,
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
                         context: context);
+
+                    setState(() {});
                   },
                   child: const Text(
                     "Sign In",
@@ -183,5 +208,7 @@ class _loginPageState extends State<loginPage> {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim());
+
+    Navigator.of(context).pop();
   }
 }

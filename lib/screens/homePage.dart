@@ -5,6 +5,8 @@ import 'package:blue/services/realtimeData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/show_snack_bar.dart';
 
@@ -21,6 +23,16 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
   var unitConsumed = 200;
   var unitCharge = 8;
   var serviceCharge = 5;
+  var totalCost;
+
+  String receiverUpiId = "9023445258@paytm";
+  String receiverName = "Adarsh Verma";
+  String transactionNote = "Test Payment";
+  var transactionAmount = '10.00';
+  // String transactionAmountStr = '10.00';
+  String transactionRefId = "TRAN001";
+  String currency = "INR";
+  String upiUrl = 'www.google.com';
 
   @override
   void initState() {
@@ -28,14 +40,37 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
       setState(() {
         unitsValue = int.parse(event.snapshot.value.toString());
         unitConsumed = int.parse(event.snapshot.value.toString());
-        // unitConsumed = unitsValue;
+        totalCost = unitConsumed * unitCharge + serviceCharge;
+        transactionAmount = totalCost.toString();
       });
     });
     super.initState();
   }
 
   @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+    transactionAmount = totalCost.toString();
+    upiUrl = "upi://pay?pa=" +
+        receiverUpiId +
+        "&pn=" +
+        receiverName +
+        "&tn=" +
+        transactionNote +
+        "&am=" +
+        transactionAmount +
+        "&tr=" +
+        transactionRefId +
+        "&cu=" +
+        currency;
+    print(transactionAmount);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool isOn = false;
+
     FirebaseAuthMethods methods = context.read<FirebaseAuthMethods>();
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +96,8 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
               )),
         ]),
       ),
-      body: Container(
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
         child: Center(
           child: Column(
             children: [
@@ -108,12 +144,50 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(
-                height: 120,
+                height: 30,
+              ),
+
+              ToggleSwitch(
+                minWidth: 200.0,
+                minHeight: 50,
+                initialLabelIndex: 1,
+                cornerRadius: 20.0,
+                activeFgColor: Colors.white,
+                inactiveBgColor: Colors.grey,
+                inactiveFgColor: Colors.white,
+                totalSwitches: 2,
+                labels: ['Start Charging', 'Stop Charging'],
+                icons: [Icons.battery_charging_full_sharp, Icons.battery_0_bar],
+                activeBgColors: [
+                  [Color(0xFF0BD0A3)],
+                  [Colors.red]
+                ],
+                onToggle: (index) {
+                  print('switched to: $index');
+                },
+              ),
+
+              // InkWell(
+              //   onTap: setState({isOn = !isOn}),
+              //   child: SizedBox(
+              //       height: 50,
+              //       width: 200,
+              //       child: Container(
+              //           decoration: BoxDecoration(
+              //               color: isOn ? Color(0xFF0BD0A3) : Colors.red),
+              //           // _isOn ? Color(0xFF0BD0A3) : Colors.red),
+              //           child: Text(
+              //             (isOn == false) ? "CHARGE" : "NOT",
+              //             style: TextStyle(fontSize: 18),
+              //           ))),
+              // ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.055,
               ),
               Expanded(
                 child: Container(
                   alignment: Alignment.bottomCenter,
-                  height: 100,
+                  height: MediaQuery.of(context).size.height * 0.5,
 
                   // constraints: BoxConstraints.expand(),
                   decoration: const BoxDecoration(
@@ -123,7 +197,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                       boxShadow: [BoxShadow(blurRadius: 12)]),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -233,8 +307,7 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  (unitConsumed * unitCharge + serviceCharge)
-                                      .toString(),
+                                  (totalCost).toString(),
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
@@ -251,8 +324,10 @@ class _powerUnitScreenState extends State<powerUnitScreen> {
                           // ),
 
                           ElevatedButton(
-                            onPressed: () {
-                              print("payment button pressed");
+                            onPressed: () async {
+                              if (await canLaunch(upiUrl)) {
+                                await launch(upiUrl);
+                              }
                             },
                             child: const Text(
                               "Continue to pay",
